@@ -49,7 +49,7 @@ export default function PolaroidGallery({ photos, senderName, receiverName }: Po
       <div className="flex flex-col items-center mb-4">
         <div className="flex items-center gap-2 px-3 py-1 bg-rose-50 border border-rose-100 rounded-full text-rose-600 text-xs font-semibold uppercase tracking-widest mb-1">
           <Camera className="w-3.5 h-3.5" />
-          Nossa Galeria de Amor 💖
+          Nossa Melhor Galeria ❤️
         </div>
         <p className="text-xs text-slate-500 text-center font-serif italic no-print animate-pulse">
           Arraste para os lados para ver todas as fotos ➔
@@ -59,7 +59,7 @@ export default function PolaroidGallery({ photos, senderName, receiverName }: Po
       {/* Styled draggable & horizontal scrolling gallery track */}
       <div 
         className="w-full overflow-x-auto flex flex-row gap-6 py-4 px-4 select-none scroll-smooth snap-x snap-mandatory scrollbar-none no-print" 
-        style={{ webkitOverflowScrolling: "touch" }}
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div className="w-2 shrink-0 sm:hidden" />
         {displayList.map((photo, index) => {

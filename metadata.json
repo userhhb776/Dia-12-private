@@ -1,5 +1,5 @@
 {
-  "name": "Amor Eterno",
+  "name": "Faça o melhor presente aqui",
   "description": "Crie uma pagina de amor personalizada para o Dia dos Namorados com fotos, musicas e cupons interativos.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]

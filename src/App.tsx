@@ -148,32 +148,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
     }
   }, [activeStep, anniversaryDate, songName, uploadedPhotos.length, cutePuns.length]);
 
-  // Synchronize songLink automatically when songName or songArtist changes with a beautiful debounce
-  useEffect(() => {
-    const term = songName.trim();
-    if (!term) {
-      setSongLink("");
-      return;
-    }
 
-    const delayDebounce = setTimeout(() => {
-      const fetchSongLink = async () => {
-        try {
-          const res = await fetch(`/api/search-song?name=${encodeURIComponent(term)}&artist=${encodeURIComponent(songArtist.trim())}`);
-          const data = await res.json();
-          if (data.url) {
-            setSongLink(data.url);
-          }
-        } catch (error) {
-          console.error("Song link search failed:", error);
-          setSongLink(`https://www.youtube.com/results?search_query=${encodeURIComponent(term + " " + songArtist)}`);
-        }
-      };
-      fetchSongLink();
-    }, 1200);
-
-    return () => clearTimeout(delayDebounce);
-  }, [songName, songArtist]);
 
   // Canvas-based real-time compression for couples' memories (fitting 1MB DB document limit)
   const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -283,7 +258,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
         anniversaryDate: showCountdown ? anniversaryDate : "DISABLED",
         photos: showPhotosToggle && uploadedPhotos.length > 0 ? uploadedPhotos : ["DISABLED"],
         loveCoupons,
-        cutePuns: showPunsToggle && cutePuns.length > 0 ? cutePuns : ["DISABLED"]
+        cutePuns: ["DISABLED"]
       };
 
       const savedId = await saveLoveLetter(letterPayload);
@@ -319,7 +294,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
           Dia dos Namorados especial
         </div>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-800 tracking-tight font-serif" style={{ fontFamily: 'Georgia, serif' }}>
-          Amor Eterno
+          Faça o melhor presente aqui
         </h1>
         <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-md mx-auto">
           Crie um site interativo exclusivo para presentear seu parceiro com memórias, músicas, cupons e uma linda carta!
@@ -378,10 +353,10 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
               >
                 <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-rose-500" />
-                  Quem é o casal apaixonado?
+                  Qual o nome do casal
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Preencha os nomes do casal e a data inicial para calcularmos cada segundo de amor compartilhado!
+                  Preencha os nomes do casal e a data inicial para calcularmos cada segundo que passaram juntos
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
@@ -399,7 +374,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
-                      Nome do seu Amor (Parceiro)
+                      Nome do seu parceiro(a)
                     </label>
                     <input
                       type="text"
@@ -546,7 +521,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                   A Nossa Música 🎵
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Qual é a música tema de vocês? Basta nos dizer o nome e o cantor/banda, e nós cuidamos de integrá-la automaticamente no site para vocês! ✨
+                  Preencha o nome da canção, o artista e cole o link do YouTube ou Spotify para que o reprodutor interativo toque na sua carta! ✨
                 </p>
 
                 <div className="space-y-3 pt-2">
@@ -574,10 +549,22 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                       onChange={(e) => setSongArtist(e.target.value)}
                     />
                   </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">
+                      Link da Música (YouTube ou Spotify)
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-hidden focus:border-rose-400 focus:ring-2 focus:ring-rose-100"
+                      placeholder="Ex: https://open.spotify.com/track/... ou https://www.youtube.com/watch?v=..."
+                      value={songLink}
+                      onChange={(e) => setSongLink(e.target.value)}
+                    />
+                  </div>
 
                   <div className="p-4 bg-rose-50/50 rounded-2xl border border-rose-100/30 text-xs text-rose-600 font-sans italic flex items-center gap-2 mt-3 leading-relaxed">
-                    <Sparkles className="w-4 h-4 text-rose-500 animate-pulse shrink-0" />
-                    <span>Nós procuramos e associamos o reprodutor de música automaticamente de forma invisível. Zero esforço para você! 😍</span>
+                    <Sparkles className="w-4 h-4 text-rose-500 shrink-0" />
+                    <span>Cole o link direto do Spotify ou do YouTube. Ele será transformado em um reprodutor de música interativo na carta final! 😍</span>
                   </div>
                 </div>
 
@@ -795,25 +782,37 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                       <span>Exibir Trilha Sonora Oficial</span>
                     </label>
                     {showMusicToggle && (
-                      <div className="pt-1.5 pl-6 grid grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Nome da Canção</label>
-                          <input
-                            type="text"
-                            value={songName}
-                            onChange={(e) => setSongName(e.target.value)}
-                            className="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs bg-white text-slate-700 font-medium"
-                            placeholder="Ex: Yellow"
-                          />
+                      <div className="pt-1.5 pl-6 space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Nome da Canção</label>
+                            <input
+                              type="text"
+                              value={songName}
+                              onChange={(e) => setSongName(e.target.value)}
+                              className="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs bg-white text-slate-700 font-medium"
+                              placeholder="Ex: Yellow"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Cantor / Banda</label>
+                            <input
+                              type="text"
+                              value={songArtist}
+                              onChange={(e) => setSongArtist(e.target.value)}
+                              className="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs bg-white text-slate-700 font-medium"
+                              placeholder="Ex: Coldplay"
+                            />
+                          </div>
                         </div>
                         <div>
-                          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Cantor / Banda</label>
+                          <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Link da Música</label>
                           <input
                             type="text"
-                            value={songArtist}
-                            onChange={(e) => setSongArtist(e.target.value)}
+                            value={songLink}
+                            onChange={(e) => setSongLink(e.target.value)}
                             className="w-full px-3 py-1.5 border border-slate-200 rounded-xl text-xs bg-white text-slate-700 font-medium"
-                            placeholder="Ex: Coldplay"
+                            placeholder="Link do Spotify ou YouTube"
                           />
                         </div>
                       </div>
@@ -866,54 +865,6 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                             </div>
                           )}
                         </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* D: CUTE PUNS SECTION TOGGLE */}
-                  <div className="bg-slate-50/60 p-4 rounded-2xl border border-slate-100 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <label className="flex items-center gap-2.5 text-xs text-slate-700 cursor-pointer select-none font-semibold">
-                        <input
-                          type="checkbox"
-                          checked={showPunsToggle}
-                          onChange={(e) => setShowPunsToggle(e.target.checked)}
-                          className="rounded text-rose-500 focus:ring-rose-250 w-4 h-4"
-                        />
-                        <Sparkle className="w-4 h-4 text-rose-500" />
-                        <span>Exibir Frases Doces / Trocadilhos</span>
-                      </label>
-                      {showPunsToggle && cutePuns.length < 5 && (
-                        <button
-                          onClick={() => setCutePuns([...cutePuns, "Cada segundo com você roda liso e limpo! 💻💝"])}
-                          className="inline-flex items-center gap-1 text-[10px] text-rose-500 font-bold hover:underline cursor-pointer"
-                        >
-                          <Plus className="w-3.5 h-3.5" /> Cadastrar Nova
-                        </button>
-                      )}
-                    </div>
-                    {showPunsToggle && (
-                      <div className="pt-1.5 pl-6 space-y-2">
-                        {cutePuns.map((pun, idx) => (
-                          <div key={idx} className="flex gap-2 items-center">
-                            <input
-                              type="text"
-                              value={pun}
-                              onChange={(e) => {
-                                const next = [...cutePuns];
-                                next[idx] = e.target.value;
-                                setCutePuns(next);
-                              }}
-                              className="flex-1 px-3 py-1.5 border border-slate-200 rounded-xl text-xs bg-white text-slate-700 focus:outline-hidden focus:ring-1 focus:ring-rose-200"
-                            />
-                            <button
-                              onClick={() => setCutePuns(cutePuns.filter((_, i) => i !== idx))}
-                              className="p-1.5 bg-red-50 hover:bg-red-100 text-red-500 rounded-full transition-colors cursor-pointer shrink-0"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        ))}
                       </div>
                     )}
                   </div>
@@ -1302,7 +1253,7 @@ function PartnerLetterView({ id, onBackToCreate }: PartnerLetterViewProps) {
             className="min-h-screen flex items-center justify-center p-4 font-sans overflow-hidden"
           >
             <motion.div 
-              className="w-full max-w-md cursor-pointer" 
+              className="w-full max-w-md cursor-pointer envelope-container" 
               onClick={handleOpenEnvelope}
               animate={isOpening ? {
                 scale: [1, 0.98, 1.02],
@@ -1310,6 +1261,7 @@ function PartnerLetterView({ id, onBackToCreate }: PartnerLetterViewProps) {
                 rotate: 0,
                 filter: "drop-shadow(0 0 30px rgba(244,63,94,0.3))"
               } : {
+                scale: [1, 1.03, 1],
                 y: [0, -10, 0],
                 rotate: [0, -2, 2, 0],
                 filter: [
@@ -1504,7 +1456,7 @@ function PartnerLetterView({ id, onBackToCreate }: PartnerLetterViewProps) {
                   <div className="text-center">
                     <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest mb-1 ${themeConfig.badge}`}>
                       <Ticket className="w-3.5 h-3.5 text-rose-500" />
-                      Seus Cupons de Amor
+                      Seus Cupons
                     </span>
                     <p className="text-xs text-slate-500 font-serif italic no-print">
                       Clique no cupom para resgatá-lo instantaneamente!
@@ -1559,22 +1511,7 @@ function PartnerLetterView({ id, onBackToCreate }: PartnerLetterViewProps) {
                 </div>
               )}
 
-              {/* Cute sliding puns displayed visually */}
-              {letter.cutePuns && letter.cutePuns.length > 0 && letter.cutePuns[0] !== "DISABLED" && (
-                <div className={`${themeConfig.punsCard} print-puns-card print-avoid-break`}>
-                  <h4 className="text-xs font-bold uppercase tracking-widest text-[#3e341f]/75 dark:text-slate-400 mb-3 flex items-center gap-1">
-                    <Sparkles className="w-4 h-4 text-rose-400 animate-pulse" />
-                    Lembretes Bobos de Afeto 💖
-                  </h4>
-                  <div className="space-y-3">
-                    {letter.cutePuns.map((p, k) => (
-                      <p key={k} className="text-xs italic text-slate-600 leading-normal border-l-2 border-rose-200 pl-3">
-                        "{p}"
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              )}
+
 
               {/* Screen back to actions or brand signature */}
               <div className="mt-12 text-center space-y-5 font-sans">
