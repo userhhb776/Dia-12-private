@@ -91,7 +91,8 @@ export async function saveLoveLetter(letter: LoveLetter): Promise<string> {
     if (err instanceof Error && (err.message.includes("permission") || err.message.includes("Permission"))) {
       handleFirestoreError(err, OperationType.WRITE, docPath);
     } else {
-      console.error("Direct Firestore write failed, utilizing fallback ID:", err);
+      console.error("Direct Firestore write failed:", err);
+      throw err;
     }
   }
 
