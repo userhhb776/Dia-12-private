@@ -62,13 +62,13 @@ export default function MusicPlayer({ songName, songArtist, songLink }: MusicPla
     <div className="w-full my-6 p-5 rounded-2xl bg-white/50 backdrop-blur-md border border-rose-100 shadow-sm flex flex-col items-center">
       <div className="flex items-center gap-2 mb-4 px-3 py-1 bg-rose-50 border border-rose-100/50 rounded-full text-rose-500 text-xs font-semibold uppercase tracking-widest">
         <Music className="w-4 h-4 animate-bounce" />
-        Nossa Trilha Sonora
+        Nossa Música
       </div>
 
       {spotifyEmbed ? (
         <div className="w-full overflow-hidden rounded-xl bg-transparent min-h-[80px]">
           <iframe
-            title="Spotify Trilha Sonora"
+            title="Spotify Nossa Música"
             src={spotifyEmbed}
             width="100%"
             height="80"
@@ -81,7 +81,7 @@ export default function MusicPlayer({ songName, songArtist, songLink }: MusicPla
       ) : youtubeSearchUrl ? (
         <div className="w-full overflow-hidden rounded-xl bg-black aspect-video shadow-md max-w-md">
           <iframe
-            title="Youtube Trilha Sonora"
+            title="Youtube Nossa Música"
             src={youtubeSearchUrl}
             width="100%"
             height="100%"

@@ -604,7 +604,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                   Diga o que você sente (Deixe-nos melhorar) 💌
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Escreva um rascunho rápido ou palavras soltas sobre o que você sente por eles e nos fale momentos fofos compartilhados. Nosso especialista em romance (Gemini AI) unirá tudo e formará a carta perfeita!
+                  Escreva os seus sentimentos abaixo de forma sincera e com todo o carinho do seu coração! ❤️
                 </p>
 
                 <div className="space-y-3 pt-2">
@@ -783,7 +783,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
                         className="rounded text-rose-500 focus:ring-rose-250 w-4 h-4"
                       />
                       <Music className="w-4 h-4 text-rose-500" />
-                      <span>Exibir Trilha Sonora Oficial</span>
+                      <span>Exibir Nossa Música</span>
                     </label>
                     {showMusicToggle && (
                       <div className="pt-1.5 pl-6 space-y-3">
@@ -1312,7 +1312,7 @@ function PartnerLetterView({ id, onBackToCreate }: PartnerLetterViewProps) {
                     <span className="text-[9px] uppercase tracking-widest text-[#9E8B62] font-semibold block">Carta de Amor</span>
                     <Heart className="w-9 h-9 text-rose-500 fill-current mx-auto animate-bounce" />
                     <p className="font-serif italic text-sm text-[#3E341F] font-bold">
-                      Segredo Revelado Ao Seu Coração...
+                      espero que goste pois fiz com todo coração ❤️
                     </p>
                   </div>
                   <div className="text-right border-t border-slate-50 pt-2 text-[10px] text-slate-400 font-mono">
