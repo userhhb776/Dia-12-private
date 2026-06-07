@@ -1,0 +1,76 @@
+{
+  "entities": {
+    "loveLetter": {
+      "title": "LoveLetter",
+      "description": "A highly personalized romantic love letter created for Valentine's Day",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique ID for the love letter"
+        },
+        "senderName": {
+          "type": "string",
+          "description": "The name of the sender"
+        },
+        "receiverName": {
+          "type": "string",
+          "description": "The name of the partner receiving the letter"
+        },
+        "originalMessage": {
+          "type": "string",
+          "description": "The original drafted message"
+        },
+        "enhancedMessage": {
+          "type": "string",
+          "description": "The AI-polished cute and sweet romantic message"
+        },
+        "musicName": {
+          "type": "string",
+          "description": "Name of their favorite song"
+        },
+        "musicArtist": {
+          "type": "string",
+          "description": "Artist of their favorite song"
+        },
+        "musicLink": {
+          "type": "string",
+          "description": "Platform link of the song (e.g., YouTube/Spotify URL)"
+        },
+        "theme": {
+          "type": "string",
+          "description": "The selected visual theme for the letter"
+        },
+        "anniversaryDate": {
+          "type": "string",
+          "description": "The anniversary or starting date of the relationship"
+        },
+        "photos": {
+          "type": "array",
+          "description": "List of compressed base64 images of the couple"
+        },
+        "loveCoupons": {
+          "type": "array",
+          "description": "List of cute interactive love coupons for the partner to redeem"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date and time this letter was created"
+        }
+      },
+      "required": [
+        "senderName",
+        "receiverName",
+        "enhancedMessage",
+        "theme"
+      ]
+    }
+  },
+  "firestore": {
+    "/letters/{letterId}": {
+      "schema": "loveLetter",
+      "description": "Store all public and shareable Valentine love letters"
+    }
+  }
+}

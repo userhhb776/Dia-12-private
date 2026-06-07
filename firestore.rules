@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Secure validation helpers
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidLoveLetter(data) {
+      return data.keys().hasAll(['senderName', 'receiverName', 'enhancedMessage', 'theme', 'createdAt'])
+        && data.keys().size() <= 14
+        && data.senderName is string && data.senderName.size() <= 150
+        && data.receiverName is string && data.receiverName.size() <= 150
+        && data.enhancedMessage is string && data.enhancedMessage.size() <= 15000
+        && data.theme is string && (data.theme == 'pastel' || data.theme == 'starry' || data.theme == 'bubblegum' || data.theme == 'polaroid')
+        && data.createdAt is string
+        && (!data.keys().hasAny(['id']) || (data.id is string && data.id.size() <= 128))
+        && (!data.keys().hasAny(['musicName']) || (data.musicName is string && data.musicName.size() <= 200))
+        && (!data.keys().hasAny(['musicArtist']) || (data.musicArtist is string && data.musicArtist.size() <= 200))
+        && (!data.keys().hasAny(['musicLink']) || (data.musicLink is string && data.musicLink.size() <= 1000))
+        && (!data.keys().hasAny(['originalMessage']) || (data.originalMessage is string && data.originalMessage.size() <= 5000))
+        && (!data.keys().hasAny(['anniversaryDate']) || (data.anniversaryDate is string && data.anniversaryDate.size() <= 100))
+        && (!data.keys().hasAny(['photos']) || (data.photos is list && data.photos.size() <= 3))
+        && (!data.keys().hasAny(['cutePuns']) || (data.cutePuns is list && data.cutePuns.size() <= 5))
+        && (!data.keys().hasAny(['loveCoupons']) || (data.loveCoupons is list && data.loveCoupons.size() <= 10));
+    }
+
+    match /letters/{letterId} {
+      allow get: if isValidId(letterId);
+      allow create, update: if isValidId(letterId) && isValidLoveLetter(request.resource.data);
+      allow list, delete: if false;
+    }
+  }
+}

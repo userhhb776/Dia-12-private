@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@media print {
+  /* Hide all interactive and dynamic components, including the custom browser button and player iframe */
+  .no-print,
+  .no-print *,
+  button,
+  iframe,
+  input,
+  textarea,
+  audio,
+  video,
+  #btn_print_pdf {
+    display: none !important;
+  }
+
+  /* Reset wrappers, bodies and canvases to fully flat clean layouts */
+  body, html, #root, .print-wrapper {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Ensure background-colors are printed by printer systems (ink-saving compliant colors) */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Setup A4 boundaries */
+  @page {
+    size: A4 portrait;
+    margin: 2.0cm;
+  }
+
+  /* Make sure container covers full width of printable space */
+  .max-w-3xl {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Prevent blocks from suffering orphan splits or breaking ugly midways */
+  .print-avoid-break {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Style main print content block */
+  .print-intro-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 2.0rem !important;
+    box-shadow: none !important;
+    color: #1e293b !important;
+  }
+
+  .print-intro-card p {
+    color: #1e293b !important;
+    font-size: 13pt !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Style cute notes / reminders */
+  .print-puns-card {
+    background-color: #fafaf9 !important;
+    border: 1px solid #e7e5e4 !important;
+    box-shadow: none !important;
+    padding: 1.25rem !important;
+    color: #44403c !important;
+    border-radius: 8px !important;
+  }
+
+  /* Format love coupons cleanly without active triggers */
+  .print-coupon-card {
+    background-color: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: none !important;
+    color: #1e293b !important;
+    border-radius: 12px !important;
+  }
+
+  .print-coupon-card * {
+    color: #1e293b !important;
+  }
+}
+
+/* Scrollbar None Utilities */
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
