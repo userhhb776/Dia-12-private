@@ -164,7 +164,7 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
           const canvas = document.createElement("canvas");
           let width = img.width;
           let height = img.height;
-          const maxDimension = 500; // max resolution to reduce payload size
+          const maxDimension = 1200; // increased dimension for higher resolution & crisp quality
 
           if (width > height) {
             if (width > maxDimension) {
@@ -181,10 +181,14 @@ function CreateLetterView({ onNavigate }: { onNavigate: (path: string) => void }
           canvas.width = width;
           canvas.height = height;
           const ctx = canvas.getContext("2d");
+          if (ctx) {
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = "high";
+          }
           ctx?.drawImage(img, 0, 0, width, height);
 
-          // Compress to compressed clean jpeg
-          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.65);
+          // Compress to clean high-quality jpeg
+          const compressedBase64 = canvas.toDataURL("image/jpeg", 0.85);
           setUploadedPhotos((prev) => [...prev, compressedBase64]);
         };
         img.src = event.target?.result as string;

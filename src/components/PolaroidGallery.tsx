@@ -10,12 +10,8 @@ interface PolaroidGalleryProps {
 export default function PolaroidGallery({ photos, senderName, receiverName }: PolaroidGalleryProps) {
   const hasPhotos = photos && photos.length > 0;
 
-  // Romantic handwritten captions for default polaroids if user uploaded nothing
-  const defaultCaptions = [
-    "O abraço que acalma meu coração... ❤️",
-    "Cada sorriso seu é minha poesia preferida ✨",
-    "Nossa história escrita nas estrelas 💫"
-  ];
+  // Romantic handwritten caption for polaroids
+  const caption = "Melhores fotos ❤️";
 
   // Placeholder images: visual representations using warm romantic SVG doodles
   const renderPlaceholder = (index: number) => {
@@ -64,7 +60,6 @@ export default function PolaroidGallery({ photos, senderName, receiverName }: Po
         <div className="w-2 shrink-0 sm:hidden" />
         {displayList.map((photo, index) => {
           const rotationClass = rotations[index % rotations.length];
-          const caption = defaultCaptions[index % defaultCaptions.length];
 
           return (
             <motion.div
@@ -107,7 +102,6 @@ export default function PolaroidGallery({ photos, senderName, receiverName }: Po
       {/* Special print view list of photos (horizontal alignment, ink-friendly styling) */}
       <div className="hidden print:flex flex-row gap-6 justify-center items-center my-6">
         {displayList.map((photo, index) => {
-          const caption = defaultCaptions[index % defaultCaptions.length];
           return (
             <div key={index} className="w-44 bg-white p-3 pb-6 border border-stone-300 rounded-xs flex flex-col items-center break-inside-avoid shadow-none">
               <div className="w-full aspect-square overflow-hidden bg-stone-100 border border-stone-200 rounded-xs mb-3">
